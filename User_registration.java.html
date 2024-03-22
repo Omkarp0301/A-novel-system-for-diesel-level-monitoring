@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>User_registration.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+User_registration.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.edi4</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageButton</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.material.textfield.TextInputEditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">User_registration </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+    <span class="s1">TextInputEditText name</span><span class="s0">;</span>
+    <span class="s1">EditText number</span><span class="s0">, </span><span class="s1">email</span><span class="s0">, </span><span class="s1">password</span><span class="s0">;</span>
+    <span class="s1">Button button3</span><span class="s0">;</span>
+    <span class="s0">boolean </span><span class="s1">valid=</span><span class="s0">true;</span>
+    <span class="s1">FirebaseAuth fAuth</span><span class="s0">;</span>
+    <span class="s1">FirebaseFirestore fstore</span><span class="s0">;</span>
+
+    <span class="s1">ImageButton imageButton</span><span class="s0">;</span>
+
+    <span class="s0">public void </span><span class="s1">checkField(TextInputEditText textField){</span>
+        <span class="s0">if </span><span class="s1">(String.valueOf(textField.getText()).isEmpty()){</span>
+            <span class="s1">textField.setError(</span><span class="s2">&quot;Error&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">valid = </span><span class="s0">false;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">valid = </span><span class="s0">true;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">checkField(EditText textField){</span>
+        <span class="s0">if </span><span class="s1">(String.valueOf(textField.getText()).isEmpty()){</span>
+            <span class="s1">textField.setError(</span><span class="s2">&quot;Error&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">valid = </span><span class="s0">false;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">valid = </span><span class="s0">true;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_user_registration)</span><span class="s0">;</span>
+
+        <span class="s1">fAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+        <span class="s1">fstore = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">name = findViewById(R.id.textInputEditText)</span><span class="s0">;</span>
+        <span class="s1">number = findViewById(R.id.editTextPhone)</span><span class="s0">;</span>
+        <span class="s1">email = findViewById(R.id.editTextTextEmailAddress)</span><span class="s0">;</span>
+        <span class="s1">password = findViewById(R.id.editTextTextPassword)</span><span class="s0">;</span>
+        <span class="s1">button3 = findViewById(R.id.button3)</span><span class="s0">;</span>
+        <span class="s1">imageButton = findViewById(R.id.imageButton11)</span><span class="s0">;</span>
+
+        <span class="s1">imageButton.setOnClickListener(v -&gt; startActivity(</span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">, </span><span class="s1">Profile.</span><span class="s0">class</span><span class="s1">)))</span><span class="s0">;</span>
+
+        <span class="s1">button3.setOnClickListener(v -&gt;  {</span>
+                <span class="s1">checkField(name)</span><span class="s0">;</span>
+                <span class="s1">checkField(number)</span><span class="s0">;</span>
+                <span class="s1">checkField(email)</span><span class="s0">;</span>
+                <span class="s1">checkField(password)</span><span class="s0">;</span>
+
+            <span class="s0">if </span><span class="s1">(valid) {</span>
+                <span class="s1">fAuth.createUserWithEmailAndPassword(String.valueOf(email.getText())</span><span class="s0">, </span><span class="s1">String.valueOf(password.getText()))</span>
+                        <span class="s1">.addOnSuccessListener(authResult -&gt; {</span>
+                            <span class="s1">FirebaseUser user = fAuth.getCurrentUser()</span><span class="s0">;</span>
+                            <span class="s1">Toast.makeText(User_registration.</span><span class="s0">this, </span><span class="s2">&quot;Account is successfully created&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s0">assert </span><span class="s1">user != </span><span class="s0">null;</span>
+                            <span class="s1">DocumentReference df = fstore.collection(</span><span class="s2">&quot;Users&quot;</span><span class="s1">).document(user.getUid())</span><span class="s0">;</span>
+
+                            <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; userInfo = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+                            <span class="s1">userInfo.put(</span><span class="s2">&quot;name&quot;</span><span class="s0">, </span><span class="s1">String.valueOf(name.getText()))</span><span class="s0">;</span>
+                            <span class="s1">userInfo.put(</span><span class="s2">&quot;Phone number&quot;</span><span class="s0">, </span><span class="s1">String.valueOf(number.getText()))</span><span class="s0">;</span>
+                            <span class="s1">userInfo.put(</span><span class="s2">&quot;email&quot;</span><span class="s0">, </span><span class="s1">String.valueOf(email.getText()))</span><span class="s0">;</span>
+                            <span class="s1">userInfo.put(</span><span class="s2">&quot;IsUser&quot;</span><span class="s0">, </span><span class="s2">&quot;1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                            <span class="s1">df.set(userInfo)</span><span class="s0">;</span>
+
+                        <span class="s1">})</span>
+                        <span class="s1">.addOnFailureListener(e -&gt; Toast.makeText(User_registration.</span><span class="s0">this, </span><span class="s2">&quot;Failed to create account&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>
